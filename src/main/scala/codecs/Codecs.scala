@@ -247,12 +247,14 @@ trait DecoderInstances:
     * supplied `name` using the given `decoder`.
     */
   def field[A](name: String)(using decoder: Decoder[A]): Decoder[A] =
-    ???
+    Decoder.fromPartialFunction { case x: Json.Obj =>
+      summon[Decoder[A]].decode(x.fields.getOrElse(name, Json.Null)) match
+        case Some(x) => x
+        // TODO handle incorrect name
+        case None => ???
+    }
 
 end DecoderInstances
-
-object DecoderInstances:
-  ???
 
 case class Person(name: String, age: Int)
 
@@ -272,8 +274,11 @@ trait PersonCodecs:
     * combine the decoders by using their methods `zip` and `transform`.
     */
   given Decoder[Person] =
-    ???
-
+    Decoder
+      .field[String]("name")
+      .zip(Decoder.field[Int]("age"))
+      .transform[Person]((name, age) => Person(name, age))
+      
 end PersonCodecs
 
 case class Contacts(people: List[Person])

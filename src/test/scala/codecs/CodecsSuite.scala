@@ -80,26 +80,26 @@ class CodecsSuite
     checkProperty(Prop.forAll((xs: List[Int]) => encodeAndThenDecodeProp(xs)))
   }
 
-  // test(
-  //   "A JSON array with at least one invalid element should be rejected (2pt)"
-  // ) {
-  //   val json = Json.Arr(List(Json.Num(1), Json.Str("foo")))
-  //   val decoder = summon[Decoder[List[Int]]]
-  //   assert(decoder.decode(json).isEmpty)
-  // }
+  test(
+    "A JSON array with at least one invalid element should be rejected (2pt)"
+  ) {
+    val json = Json.Arr(List(Json.Num(1), Json.Str("foo")))
+    val decoder = summon[Decoder[List[Int]]]
+    assert(decoder.decode(json).isEmpty)
+  }
 
-  // test("a 'Person' value should be encoded as a JSON object (1pt)") {
-  //   val person = Person("Alice", 42)
-  //   val json = Json.Obj(Map("name" -> Json.Str("Alice"), "age" -> Json.Num(42)))
-  //   val encoder = summon[Encoder[Person]]
-  //   assertEquals(encoder.encode(person), json)
-  // }
+  test("a 'Person' value should be encoded as a JSON object (1pt)") {
+    val person = Person("Alice", 42)
+    val json = Json.Obj(Map("name" -> Json.Str("Alice"), "age" -> Json.Num(42)))
+    val encoder = summon[Encoder[Person]]
+    assertEquals(encoder.encode(person), json)
+  }
 
-  // test("it is possible to encode and decode people (4pts)") {
-  //   checkProperty(
-  //     Prop.forAll((s: String, x: Int) => encodeAndThenDecodeProp(Person(s, x)))
-  //   )
-  // }
+  test("it is possible to encode and decode people (4pts)") {
+    checkProperty(
+      Prop.forAll((s: String, x: Int) => encodeAndThenDecodeProp(Person(s, x)))
+    )
+  }
 
   // test("a 'Contacts' value should be encoded as a JSON object (1pt)") {
   //   val contacts = Contacts(List(Person("Alice", 42)))
